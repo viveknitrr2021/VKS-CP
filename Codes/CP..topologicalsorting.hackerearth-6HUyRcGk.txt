@@ -1,0 +1,64 @@
+//https://www.hackerearth.com/practice/algorithms/graphs/topological-sort/practice-problems/algorithm/topological-sorttutorial/
+
+
+#include <bits/stdc++.h>
+using namespace std;
+
+template<typename T>
+
+class Graph{
+
+	map<T,list<T> > adjList;
+	map<T,bool> visited;
+	list<T> ordering;
+
+public:
+	Graph(){
+
+	}
+	void addEdge(T u,T v,bool bidir=true){
+		adjList[u].push_back(v);
+		if(bidir){
+			adjList[v].push_back(u);
+		}
+	}
+	void dfs(T node){
+		if(!visited[node]){
+			visited[node] = true;
+			for(T neighbour:adjList[node]){
+				if(!visited[neighbour]){
+					dfs(neighbour);
+				}
+			}
+			ordering.push_front(node);
+		}
+	}
+	void print(){
+		for(auto i:ordering)	cout<<i<<" ";
+		cout<<"\n";
+	}
+};
+
+
+int main()
+{
+	//g++ -o toposort1 toposort1.cpp&toposort1.exe
+	Graph<int> g;
+	int n;int m;cin>>n>>m;
+	vector <pair<int,int> > v;
+	while(m--){
+	    int a,b;
+	    cin>>a>>b;
+	    v.push_back(make_pair(a,b));
+	}
+	sort(v.rbegin(),v.rend());
+	for(int i=0;i<v.size();i++){
+	    g.addEdge(v[i].first,v[i].second,false);
+	}
+	for(int i=n;i>=1;i--){
+		g.dfs(i);
+	}
+	g.print();
+
+return 0;
+}

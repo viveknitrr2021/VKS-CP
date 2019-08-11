@@ -1,0 +1,50 @@
+//https://practice.geeksforgeeks.org/problems/detect-cycle-in-an-undirected-graph/1/?track=md-graph&batchId=144
+
+/*This is a function problem.You only need to complete the function given below*/
+/* This function is used to detect a cycle in undirected graph
+*  adj[]: array of vectors to represent graph
+*  V: number of vertices
+*/
+
+//helper function...........................................................................
+
+bool Helper( int node , map<int,bool> &vis , int parent , map<int,list<int> > &adjList ){
+    vis[node]=true;
+    for(int nbr:adjList[node]){
+        if(!vis[nbr]){
+            bool detect=Helper(nbr,vis,node,adjList);
+            if(detect) return true;
+        }
+        else if(nbr!=parent){
+            return true;
+        }
+    }
+    return false;
+}
+
+//given function..........................................................................
+
+bool isCyclic(vector<int> adj[], int V)
+{
+   map<int,list<int> > adjList;
+   for(int i=0;i<V;i++){
+       for(int j=0;j<adj[i].size();j++){
+           adjList[i].push_back(adj[i][j]);
+           if(i==adj[i][j]) return true;
+       }
+   }
+   map<int,bool> vis;
+   for(auto i:adjList){
+       int node=i.first;
+       if(!vis[node]){
+           bool ans=Helper(node,vis,node,adjList);
+           if(ans == true) return true;
+       }
+   }
+   return false;
+   
+}
+
+/*
+Like directed graphs, we can use DFS to detect cycle in an undirected graph in O(V+E) time. We do a DFS traversal of the given graph. For every visited vertex ‘v’, if there is an adjacent ‘u’ such that u is already visited and u is not parent of v, then there is a cycle in graph. If we don’t find such an adjacent for any vertex, we say that there is no cycle. The assumption of this approach is that there are no parallel edges between any two vertices.
+*/

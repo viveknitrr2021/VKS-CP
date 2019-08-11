@@ -1,0 +1,49 @@
+// type-2 Range update point query
+
+//https://www.spoj.com/problems/UPDATEIT/
+
+#include<bits/stdc++.h>
+using namespace std;
+typedef long long ll;
+ll BIT[100005];
+vector<ll> a(100005);
+ll n;
+void update(ll i,ll inc){
+	while(i<=n){
+		BIT[i]+=inc;
+		i+=(i&(-i));
+	}
+	return;
+}
+ll query(ll i){
+	ll ans=0;
+	while(i>0){
+		ans+=BIT[i];
+		i-=(i&(-i));
+	}
+	return ans;
+}
+int main(){
+	//g++ -o updateit-fenwick updateit-fenwick.cpp&updateit-fenwick.exe
+	ios_base::sync_with_stdio(false);
+    cin.tie(NULL);
+    cout.tie(NULL);
+	ll t;cin>>t;
+	while(t--){
+		ll u;cin>>n>>u;
+		memset(BIT,0,sizeof(BIT));
+		while(u--){
+			ll l,r,val;cin>>l>>r>>val;
+			l++,r++;
+			update(l,val);
+			update(r+1,-val);
+		}
+		ll q;cin>>q;
+		while(q--){
+			ll ind;cin>>ind;
+			ind++;
+			cout<<query(ind)<<"\n";
+		}
+	}
+	return 0;
+}

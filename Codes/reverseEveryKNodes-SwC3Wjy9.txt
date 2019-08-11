@@ -1,0 +1,22 @@
+//https://practice.geeksforgeeks.org/problems/reverse-a-linked-list-in-groups-of-given-size/1/?track=md-linkedlist
+struct node *reverse (struct node *head, int k)
+{ 
+    struct node* next=NULL;
+    struct node* curr=head;
+    struct node* prev=NULL;
+    int c=0;
+    while(curr!=NULL && c<k){
+        next=curr->next;
+        curr->next=prev;
+        prev=curr;
+        curr=next;
+        c++;
+    }
+    if(next!=NULL) head->next=reverse(next,k);
+    return prev;
+}
+/*
+1.->Reverse the first sub-list of size k. While reversing keep track of the next node and previous node. Let the pointer to the next node be next and pointer to the previous node be prev. 
+2->head->next = reverse(next, k) ( Recursively call for rest of the list and link the two sub-lists )
+3->Return prev ( prev becomes the new head of the list  )
+*/

@@ -1,0 +1,17 @@
+//fenwick pseudo
+ll n;
+void update(ll* BIT,ll i,ll inc){
+	while(i<=n){
+		BIT[i]+=inc;
+		i+=(i&(-i));
+	}
+	return;
+}
+ll query(ll* BIT,ll i){
+	ll ans=0;
+	while(i>0){
+		ans+=BIT[i];
+		i-=(i&(-i));
+	}
+	return ans;
+}

@@ -1,0 +1,66 @@
+//Bipartite
+
+#include<bits/stdc++.h>
+typedef long long ll;
+using namespace std;
+
+class Graph{
+	int V;
+	list<int> *l;
+
+public:
+	Graph(int v){
+		V=v;
+		l = new list<int>[V];
+	}
+	void addEdge(int u,int v){
+		l[u].push_back(v);
+		l[v].push_back(u);
+	}
+	bool isBipartite(int s){
+		queue<int> q;
+		q.push(s);
+		int *colors = new int[V];
+		for(int i=0;i<V;i++){
+			colors[i]=-1;
+		}
+		colors[s]=0;
+		bool ans = true;
+
+		while(!q.empty() && ans){
+			int u=q.front();
+			q.pop();
+			for(auto v:l[u]){
+				if(colors[v]==-1){
+					colors[v]=1- colors[u];
+					q.push(v);
+				}
+				else if(colors[v]==colors[u]){
+					return false;
+				}
+			}
+		}
+		return true;
+	}
+
+};
+
+int main(){
+	//g++ -o bipartite bipartite.cpp&bipartite.exe
+	ll t;
+	cin>>t;
+	while(t--){
+		ll n,m;cin>>n>>m;
+		Graph g(n);
+		while(m--){
+			ll a,b;cin>>a>>b;
+			addEdge(a,b); 
+		}
+		if(g.isBipartite(0)){
+			cout<<"It is bipartite"<<"\n";
+		}
+		else cout<<"No it's not\n";
+		r=0;
+	}
+	return 0;
+}

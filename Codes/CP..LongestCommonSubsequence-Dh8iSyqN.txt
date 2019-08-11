@@ -1,0 +1,77 @@
+//longest common subsequence
+/*
+Sample output....->
+
+ASDFGH
+ADHJKLS
+
+LCS is :ADH
+length of lcs is 3
+
+*/
+
+#include<bits/stdc++.h>
+#define f(i,a,b) for(int i=a;i<b;i++)
+using namespace std;
+
+int lcs(char *x,char *y,int m,int n){
+	//bottom up approach
+	int L[m+1][n+1];
+	//L[i][j] contains length of LCS of X[0..i-1] and Y[0..j-1]
+	f(i,0,m+1){
+		f(j,0,n+1){
+			if(i==0 || j==0) L[i][j]=0;
+			else if(x[i-1]==y[j-1]) L[i][j]=1+L[i-1][j-1];
+			else L[i][j]=max(L[i-1][j],L[i][j-1]);
+		}
+	}
+	int index =L[m][n];
+	char ans[index+1];
+	ans[index]='\0';
+	int i=m,j=n;
+	while(i>0 && j>0){
+		// If current character in X[] and Y are same, then 
+      	// it is part of our ans 
+		if(x[i-1]==y[j-1]) ans[index-1]=x[i-1],i--,j--,index--;
+		// If not same, then find the larger of two and 
+      	// go in the direction of larger value
+		else if(L[i-1][j]>L[i][j-1]) i--;
+		else j--;
+	}
+	cout<<"\nLCS is :"<<ans<<"\n";
+	return L[m][n];
+}
+int main(){
+	char s1[100],s2[100];
+	cin>>s1>>s2;
+	int m=strlen(s1),n=strlen(s2);
+	int p=lcs(s1,s2,m,n);
+	cout<<"length of lcs is "<<p<<"\n";
+	return 0;
+}
+
+
+//........................................................................
+/*
+						lcs("AXYT", "AYZX")
+                       /                 \
+         lcs("AXY", "AYZX")            lcs("AXYT", "AYZ")
+         /            \                  /               \
+lcs("AX", "AYZX") lcs("AXY", "AYZ")   lcs("AXY", "AYZ") lcs("AXYT", "AY")
+
+*/
+
+//.........................................................................
+
+/*
+Recurrence
+int lcs( char *X, char *Y, int m, int n )  
+{  
+    if (m == 0 || n == 0)  
+        return 0;  
+    if (X[m-1] == Y[n-1])  
+        return 1 + lcs(X, Y, m-1, n-1);  
+    else
+        return max(lcs(X, Y, m, n-1), lcs(X, Y, m-1, n));  
+} 
+*/

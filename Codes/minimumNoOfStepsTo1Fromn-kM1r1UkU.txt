@@ -1,0 +1,108 @@
+/*
+
+Problem Statement
+Reduce a no into 1 in minimum no of steps and the operations allowed are
+1.if divisible by 3 you can divide it
+2.same goes with 2
+3.at any step if you want you are allowed to subtract 1
+eg 10 --> 5(div by 2) --> 4(sub 1) --> 2(div by 2) --> 1(sub by 1)
+it not may be the optimal solution your task is just to find that!!!
+
+*/
+
+
+//.........................................................................
+
+
+
+#include<bits/stdc++.h>
+typedef long long ll;
+using namespace std;
+
+//........................................................................
+//memoized solution
+
+int memo[500001];
+
+int findmemo(int n){
+	if(n==1) return 0;
+
+	int q1=(int)1e9;
+	int q2=(int)1e9;
+	int q3=(int)1e9;
+
+	if(memo[n]!=-1) return memo[n];
+
+	if(n%3==0) q1=1+findmemo(n/3);
+	if(n%2==0) q2=1+findmemo(n/2);
+	q3=1+findmemo(n-1);
+
+	int ans = min(q1,min(q2,q3));
+	memo[n]=ans;
+	return ans;
+}
+
+//.......................................................................
+
+//bottom up dp
+
+int find_dp(int n){
+	int dp[500001];
+
+	dp[0]=0; dp[2]=1;
+	dp[1]=0; dp[3]=1;
+
+	for(int i=4;i<=n;i++){
+		int q1=(int)1e9;
+		int q2=(int)1e9;
+		int q3=(int)1e9;
+
+		if(i%3==0) q1=1+dp[i/3];
+		if(i%2==0) q2=1+dp[i/2];
+		q3=1+dp[i-1];
+
+		dp[i]=min(q1,min(q2,q3));
+	}
+	return dp[n];
+}
+
+//......................................................................
+
+int main(){
+	//g++ -o nosteps nosteps.cpp&nosteps.exe
+	int n;
+	cin>>n;
+	fill(memo,memo+n+1,-1);
+	cout<<findmemo(n)<<"\n";
+	cout<<find_dp(n)<<"\n";
+}
+
+
+//..........................................................
+
+
+/*
+
+//recursive solution
+
+
+int find(int n){
+	if(n==1) return 0;
+
+	int q1=(int)1e9;
+	int q2=(int)1e9;
+	int q3=(int)1e9;
+	if(n%3==0) q1=1+find(n/3);
+	if(n%2==0) q2=1+find(n/2);
+	q3=1+find(n-1);
+	return min(q1,min(q2,q3));
+}
+
+int main(){
+	//g++ -o nosteps nosteps.cpp&nosteps.exe
+	int n;
+	cin>>n;
+	cout<<find(n)<<"\n";
+}
+
+*/

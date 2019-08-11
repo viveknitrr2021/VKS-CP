@@ -1,0 +1,22 @@
+//https://practice.geeksforgeeks.org/problems/finding-middle-element-in-a-linked-list/1/?track=md-linkedlist&batchId=144
+int getNthFromLast(Node *head, int n)
+{
+      int c=0;
+      struct Node* f1=head;
+      struct Node* f2=head;
+      while(1){
+          if(c==n-1){
+              break;
+          }
+          if(f1->next==NULL){
+              return -1;
+          }
+          c++;
+          f1=f1->next;
+      }
+      while(f1->next!=NULL){
+          f1=f1->next;
+          f2=f2->next;
+      }
+      return f2->data;
+}

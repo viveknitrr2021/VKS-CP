@@ -1,0 +1,19 @@
+//https://practice.geeksforgeeks.org/problems/check-if-linked-list-is-pallindrome/1/?track=md-linkedlist&batchId=144
+bool isPalindrome(Node *head)
+{
+    int p=0,f=0;
+    int a[51];
+    while(head!=NULL){
+        a[p]=head->data;
+        p++;
+        head=head->next;
+    }
+    p--;
+    for(int i=p;i>=p/2;i--){
+        if(a[i]!=a[p-i]){
+            f=1;break;
+        }
+    }
+    if(f==1) return false;
+    else return true;
+}

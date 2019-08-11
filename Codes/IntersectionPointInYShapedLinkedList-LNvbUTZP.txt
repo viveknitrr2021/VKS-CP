@@ -1,0 +1,35 @@
+//https://practice.geeksforgeeks.org/problems/intersection-point-in-y-shapped-linked-lists/1/?track=md-linkedlist&batchId=144
+
+/* Should return data of intersection point of two linked
+   lists head1 and head2.
+   If there is no intersecting point, then return -1. */
+
+int intersectPoint(Node* head1, Node* head2)
+{
+    Node* f1=head1;
+    Node* f2=head2;
+    int c1=0;int c2=0;
+    while(f1->next!=NULL) c1++,f1=f1->next;
+    while(f2->next!=NULL) c2++,f2=f2->next;
+    int diff=abs(c1-c2);
+    if(c1>c2) f1=head1,f2=head2;
+    else f1=head2,f2=head1;
+    while(diff--) f1=f1->next;
+    while(f1->next!=NULL && f2->next!=NULL){
+        if(f1->data==f2->data) return f1->data;
+        f1=f1->next;
+        f2=f2->next;
+    }
+    return -1;
+    
+}
+
+/*
+
+1) Get count of the nodes in the first list, let be c1.
+2) Get count of the nodes in the second list, let be c2.
+3) Get the difference of counts d = abs(c1 – c2)
+4) Now traverse the bigger list from the first node till d nodes so that from here onwards both the lists have equal no of nodes.
+5) Then we can traverse both the lists in parallel till we come across a common node.
+
+*/

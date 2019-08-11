@@ -1,0 +1,66 @@
+//type1 point update point query
+//baadshah codechef
+//https://www.codechef.com/problems/BAADSHAH
+
+#include<bits/stdc++.h>
+using namespace std;
+typedef long long ll;
+ll BIT[100005];
+ll a[100005];
+ll n,q;
+void update(ll i,ll inc){
+	while(i<=n){
+		BIT[i]+=inc;
+		i+=(i&(-i));
+	}
+	return;
+}
+ll query(ll i){
+	ll ans=0;
+	while(i>0){
+		ans+=BIT[i];
+		i-=(i&(-i));
+	}
+	return ans;
+}
+int main(){
+	ios_base::sync_with_stdio(false);
+    cin.tie(NULL);
+    cout.tie(NULL);
+	cin>>n>>q;
+	for(ll i=1;i<=n;i++){
+		 cin>>a[i];
+		 update(i,a[i]);
+	}
+	while(q--){
+		ll k;cin>>k;
+		if(k==1){
+			ll x,y;cin>>x>>y;
+			ll inc=y-a[x];
+			a[x]=y;
+			update(x,inc);
+		}
+		else{
+			ll z;cin>>z;
+			ll f=0,l=1,h=n,m,ans;
+			while(l<=h){
+				m=(l+h)/2;
+				ll t=query(m);
+				if(t==z){
+					f=1;
+					ans=m;
+					break;
+				}
+				else if(t>z){
+					h=m-1;
+				}
+				else{
+					l=m+1;
+				}
+			}
+			if(f)cout<<"Found "<<m<<"\n";
+			else cout<<"Not Found \n";
+		}
+	}
+	return 0;
+}

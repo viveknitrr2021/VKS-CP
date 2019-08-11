@@ -1,0 +1,132 @@
+//https://www.hackerrank.com/challenges/journey-to-the-moon/problem
+
+//Journey to the moon Hackerrank
+
+//Solution using dsu..............................................................
+//...............................................................................................
+
+#include<bits/stdc++.h>
+#define f(i,a,b) for(long long i=a;i<b;i++)
+typedef long long ll;
+using namespace std;
+ll a[100005];
+class Set{
+public:
+    ll rank;
+    ll parent;
+};
+ll find(Set *set,ll i){
+    if(set[i].parent!=i){
+        set[i].parent = find(set,set[i].parent);
+    }
+    return set[i].parent;
+}
+void Union(Set *set,ll v1,ll v2){
+    ll v1_root = find(set,v1);
+    ll v2_root = find(set,v2);
+    if(set[v1_root].rank < set[v2_root].rank){
+        set[v1_root].parent=v2_root;
+    }
+    else if(set[v1_root].rank > set[v2_root].rank){
+        set[v2_root].parent=v1_root;
+    }
+    else{
+        set[v2_root].parent=v1_root;
+        set[v1_root].rank++;
+    }
+}
+ 
+int main(){
+    //g++ -o dsumoon dsumoon.cpp&dsumoon.exe
+    ll n,p;cin>>n>>p;
+    Set *set = new Set[n+1];
+    f(i,0,n){
+        set[i].parent=i;
+        set[i].rank=0;
+    }
+    while(p--){
+        ll a,b;cin>>a>>b;
+        Union(set,a,b);
+    }
+    map<ll,ll> mp;
+    f(i,0,n){
+        mp[find(set,i)]++;
+    }
+    ll ans=n*(n-1)/2;
+    for(auto i:mp){
+        ll q=i.second;
+        ans-=q*(q-1)/2;
+    }
+    cout<<ans<<"\n";
+    return 0;
+}
+
+
+
+//solution using dfs(connected component approach)............................................................
+..............................................................................................................
+
+#include <bits/stdc++.h>
+typedef long long ll;
+using namespace std;
+
+ll n,p;
+
+template<typename T>
+
+class Graph{
+
+    map<T,list<T> > adjList;
+
+public:
+    Graph(){
+
+    }
+    void addEdge(T u,T v,bool bidir=true){
+        adjList[u].push_back(v);
+        if(bidir){
+            adjList[v].push_back(u);
+        }
+    }
+    void dfsHelper(T node,map<T,bool> &visited,ll &country_size){
+        visited[node] = true;
+        country_size++;
+        for(auto neighbour :adjList[node]){
+            if(!visited[neighbour]){
+                dfsHelper(neighbour,visited,country_size);
+            }
+        }
+    }
+    ll dfs(T src){
+
+        map<T,bool> visited;
+        ll ans;
+        ans=((n-1)*(n))/2;
+        for(auto i:adjList){
+            T city = i.first;
+            if(!visited[city]){
+                ll country_size=0;
+                dfsHelper(city,visited,country_size);
+                ans=ans-((country_size-1)*(country_size)/2);
+            }
+        }
+        return ans;
+    }
+
+};
+
+
+int main()
+{
+    //g++ -o moon moon.cpp&moon.exe
+    Graph<ll> g;
+    cin>>n>>p;
+    while(p--){
+        ll a,b;
+        cin>>a>>b;
+        g.addEdge(a,b);
+    }
+    cout<<g.dfs(0)<<"\n";
+    
+return 0;
+}

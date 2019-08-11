@@ -1,0 +1,32 @@
+//https://practice.geeksforgeeks.org/problems/detect-loop-in-linked-list/1/?track=md-linkedlist
+int detectloop(Node *head) {
+    
+    int c=0,f=0;
+    while(head!=NULL){
+        head=head->next;
+        c++;
+        if(c>300){
+            f=1;
+            break;
+        }
+    }
+    if(f==0) return 0;
+    else return 1;
+    
+}
+
+/*
+
+int detectloop(struct Node *list) {
+    struct Node *slow_p = list, *fast_p = list;
+    while (slow_p && fast_p && fast_p->next) {
+        slow_p = slow_p->next;
+        fast_p = fast_p->next->next;
+        if (slow_p == fast_p) {
+            return 1;
+        }
+    }
+    return 0;
+}
+
+*/

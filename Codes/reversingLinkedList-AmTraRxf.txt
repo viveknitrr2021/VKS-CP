@@ -1,0 +1,15 @@
+//https://practice.geeksforgeeks.org/problems/reverse-a-linked-list/1/?track=md-linkedlist
+Node* reverseList(Node *head)
+{
+  Node* curr=head;
+  Node* prev=NULL;
+  Node* next=NULL;
+  
+  while(curr!=NULL){
+      next=curr->next;
+      curr->next=prev;
+      prev=curr;
+      curr=next;
+  }
+  return prev;
+}

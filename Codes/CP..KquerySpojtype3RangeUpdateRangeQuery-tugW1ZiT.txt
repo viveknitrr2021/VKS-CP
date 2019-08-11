@@ -1,0 +1,67 @@
+//type 3 Range Update Range Query
+
+#include<bits/stdc++.h>
+using namespace std;
+typedef long long ll;
+ 
+ll BIT[30005],n,q;
+ 
+struct node{
+	ll l,r,p,val;
+};
+ 
+node a[230005];
+ 
+bool comp(node a,node b){
+	if(a.val == b.val) return a.l>b.l;
+	else return a.val>b.val;
+}
+ 
+void update(ll i){
+	while(i<=n){
+		BIT[i]+=1;
+		i+=(i&(-i));
+	}
+	return;
+}
+ 
+ll query(ll i){
+	ll ans=0;
+	while(i>0){
+		ans+=BIT[i];
+		i-=(i&(-i));
+	}
+	return ans;
+}
+ 
+int main(){
+	//g++ -o kquery-fenwick kquery-fenwick.cpp&kquery-fenwick.exe
+	ios_base::sync_with_stdio(false);
+    cin.tie(NULL);
+    cout.tie(NULL);
+	cin>>n;
+	for(ll i=0;i<n;i++){
+		cin>>a[i].val;
+		a[i].l=0;a[i].p=0;
+		a[i].r = i+1;
+	}
+	cin>>q;
+	ll ans[q+1];
+	for(ll i=n;i<n+q;i++){
+		cin>>a[i].l>>a[i].r>>a[i].val;
+		a[i].p = i-n+1;
+	}
+	sort(a,a+n+q,comp);
+	ll i=0;
+	while(i<n+q){
+		//if array element update the BIT array
+		if(a[i].l == 0) update(a[i].r);
+		//else do the query
+		else ans[a[i].p] = query(a[i].r)-query(a[i].l-1);
+		i++;
+	}
+	for(ll j=1;j<=q;j++){
+		cout<<ans[j]<<"\n";
+	}
+	return 0;
+}

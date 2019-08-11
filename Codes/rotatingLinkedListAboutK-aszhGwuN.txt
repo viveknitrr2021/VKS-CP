@@ -1,0 +1,21 @@
+//https://practice.geeksforgeeks.org/problems/rotate-a-linked-list/1
+Node* rotate(Node* head, int k) {
+    if (k == 0) return head;     // If K is zero return head as no node needs to be reversed   
+    Node* current = head;
+    int count = 1;
+    while(count<k && current!=NULL){
+        current=current->next;
+        count++;
+    }
+    if(current == NULL) return head;
+    Node* kth=current;
+    while(current->next!=NULL) current=current->next;
+    current->next=head;
+    head=kth->next;
+    kth->next=NULL;
+    return head; 
+}
+/*
+To rotate the linked list, we need to change next of kth node to NULL, next of the last node to the previous head node, and finally, change head to (k+1)th node. So we need to get hold of three nodes: kth node, (k+1)th node and last node.
+Traverse the list from the beginning and stop at kth node. Store pointer to kth node. We can get (k+1)th node using kthNode->next. Keep traversing till the end and store pointer to last node also. Finally, change pointers as stated above.
+*/
