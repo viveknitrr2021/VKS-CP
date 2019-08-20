@@ -1,0 +1,20 @@
+//https://practice.geeksforgeeks.org/problems/finding-middle-element-in-a-linked-list/1/?track=md-linkedlist&batchId=144
+ 
+//finding middle element in a linked list in a single pass
+ 
+int getMiddle(Node *head)
+{
+    if(head==NULL) return -1;
+   Node *f1=head;
+   Node *f2=head;
+   while(f2!=NULL && f2->next!=NULL){
+       f1=f1->next,f2=f2->next->next;
+   }
+   return f1->data;
+}
+ 
+/*
+f1 is slow pointer moves 1 at a time
+while f2 is fast moves two at a time
+when f2 reaches end of the list f1 is in the middle
+*/
