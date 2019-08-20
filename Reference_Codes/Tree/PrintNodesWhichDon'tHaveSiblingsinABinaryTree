@@ -1,0 +1,21 @@
+//https://practice.geeksforgeeks.org/problems/print-all-nodes-that-dont-have-sibling/1/?ref=self
+ 
+vector<int> v;
+void make(Node* node){
+   if(node==NULL) return;
+   if(node->left==NULL and node->right!=NULL) v.push_back(node->right->data);
+   else if(node->left!=NULL and node->right==NULL) v.push_back(node->left->data);
+   make(node->left);
+   make(node->right);
+}
+void printSibling(Node* node)
+{
+   v.clear();
+   make(node);
+   sort(v.begin(),v.end());
+   int n=v.size();
+   if(n==0) cout<<"-1";
+   else{
+       for(int i=0;i<n;i++) cout<<v[i]<<" ";
+   }
+}
