@@ -1,0 +1,33 @@
+//https://practice.geeksforgeeks.org/problems/two-mirror-trees/1/?ref=self
+ 
+vector<int> v1,v2;
+void travell(Node* root){
+    if(root==NULL) return;
+    else{
+        travell(root->left);
+        v1.push_back(root->data);
+        travell(root->right);
+    }
+}
+void travelr(Node* root){
+    if(root==NULL) return;
+    else{
+        travelr(root->right);
+        v2.push_back(root->data);
+        travelr(root->left);
+    }
+}
+int areMirror(Node* a, Node* b)
+{
+   v1.clear();v2.clear();
+   travell(a);
+   travelr(b);
+   if(v1==v2) return 1;
+   return 0;
+}
+ 
+/*
+we do left traversal than right of tree 1
+for other we do opposite we go right first
+Note : only inorder traversal should be used as other two are not symmetric.
+*/
