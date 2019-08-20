@@ -1,0 +1,27 @@
+//https://practice.geeksforgeeks.org/problems/check-for-balanced-tree/1/?ref=self
+ 
+//height balanced tree
+ 
+int findHeight(Node* root){
+    if(root==NULL) return 0;
+    return 1+max(findHeight(root->left),findHeight(root->right));
+}
+ 
+bool isBalanced(Node *root)
+{
+    if(root==NULL) return true;
+    int l=findHeight(root->left);
+    int r=findHeight(root->right);
+   
+    if(abs(l-r)<=1 and isBalanced(root->left) and isBalanced(root->right))
+        return true;
+   
+    return false;
+}
+ 
+/*
+An empty tree is height-balanced. A non-empty binary tree T is balanced if:
+1) Left subtree of T is balanced
+2) Right subtree of T is balanced
+3) The difference between heights of left subtree and right subtree is not more than 1.
+*/
