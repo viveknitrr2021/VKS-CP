@@ -1,0 +1,140 @@
+//Different Views in a Binary Tree
+
+
+
+//.................................................................................................................
+//Bottom View
+//https://practice.geeksforgeeks.org/problems/bottom-view-of-binary-tree/1/?track=md-tree&batchId=144
+
+void bottomView(Node *root)
+{
+   queue<pair<Node*,int> > q;
+   q.push(make_pair(root,0));
+   map<int,int> mp;
+   while(!q.empty()){
+       int hd=q.front().second;
+       Node* node = q.front().first;
+       q.pop();
+       mp[hd]=node->data;
+       if(node->left!=NULL){
+           q.push(make_pair(node->left,hd-1));
+       }
+       if(node->right!=NULL){
+           q.push(make_pair(node->right,hd+1));
+       }
+   }
+   for(auto i:mp) cout<<i.second<<" ";
+}
+ 
+/*
+Given a Binary Tree, we need to print the bottom view from left to right. 
+A node x is there in output if x is the bottommost node at its horizontal distance.
+Horizontal distance of left child of a node x is equal to horizontal distance of x minus 1,
+and that of right child is horizontal distance of x plus 1.
+So using a map ensures that for a particular distance it only holds one value or the node which comes latest.
+*/
+//..........................................................................................................
+
+
+
+
+
+
+
+//.......................................................................................................
+//Top View
+//https://practice.geeksforgeeks.org/problems/top-view-of-binary-tree/1/?ref=self
+ 
+void topView(struct Node *root)
+{
+   queue<pair<Node*,int> > q;
+   q.push(make_pair(root,0));
+   map<int,int> mp;
+   while(!q.empty()){
+       int hd=q.front().second;
+       Node* node = q.front().first;
+       q.pop();
+       if(mp[hd]==0)    mp[hd]=node->data;
+       if(node->left!=NULL){
+           q.push(make_pair(node->left,hd-1));
+       }
+       if(node->right!=NULL){
+           q.push(make_pair(node->right,hd+1));
+       }
+   }
+   for(auto i:mp) cout<<i.second<<" ";
+}
+ 
+/*
+we just have to store first occurrence of a specific distanced node in the map not the last
+*/
+//......................................................................................................
+
+
+
+
+
+
+//.....................................................................................................
+//Left view
+//https://practice.geeksforgeeks.org/problems/left-view-of-binary-tree/1/?track=md-tree&batchId=144
+ 
+void leftView(Node *root)
+{
+  if(root==NULL) return;
+  queue<Node*> q;
+  q.push(root);
+  while(!q.empty()){
+      int cnt=q.size();
+      int a=1;
+      while(cnt>0){
+          Node* f1=q.front();
+          if(a==1){
+              cout<<f1->data;
+              a--;
+          }
+          q.pop();
+          if(f1->left!=NULL) q.push(f1->left);
+          if(f1->right!=NULL) q.push(f1->right);
+          cnt--;
+      }
+      cout<<" ";
+  }
+}
+//.................................................................................................
+
+
+
+
+
+
+///............................................................................................
+//Right View
+
+//https://practice.geeksforgeeks.org/problems/right-view-of-binary-tree/1/?ref=self
+ 
+int mx;
+void travel(Node* node,int level,int &mx){
+    if(node==NULL) return;
+    if(mx<level){
+        cout<<node->data<<" ";
+        mx=level;
+    }
+    if(node->right!=NULL) travel(node->right,level+1,mx);
+    if(node->left!=NULL) travel(node->left,level+1,mx);
+}
+void rightView(Node *root)
+{
+   mx=0;
+   travel(root,1,mx);
+}
+ 
+/*
+The problem can also be solved using simple recursive traversal. 
+We can keep track of level of a node by passing a parameter to all recursive calls. 
+The idea is to keep track of maximum level also. And traverse the tree in a manner
+that right subtree is visited before left subtree. 
+Whenever we see a node whose level is more than maximum level so far, 
+we print the node because this is the last node in its level.
+(Note that we traverse the right subtree before left subtree).
+*/
